@@ -17,20 +17,19 @@ public class O2O_Receiver implements Runnable
     @Override
     public void run(){
         try{
-            System.out.println("created");
-            inFromClient = new BufferedReader(new
+            inFromClient= new BufferedReader(new
                     InputStreamReader(Conn_Socket.getInputStream()));
-        } catch(IOException e){
-            System.out.println("Fail to create Socket inputstream");
+        }catch(IOException e){
+            System.out.println("IoException Fail to get inputStream");
         }
 
         while(true) {
             try {
-                String Msg_from_peer = inFromClient.readLine();
-                System.out.println("From " + ip + " : " + Msg_from_peer);
-            } catch (IOException e) {
-                System.out.println("IoException1");
-                break;
+                String Msg_from_peer = inFromClient.readLine();// read msg from peer
+                System.out.println("From " + ip + " : " + Msg_from_peer);// print msg
+            }catch (IOException e) {
+                    System.out.println("IoException1 Fail to readLine");
+                    break;
             }
         }
     }

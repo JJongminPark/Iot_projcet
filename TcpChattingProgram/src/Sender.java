@@ -6,20 +6,23 @@ import java.net.Socket;
 import java.util.HashMap;
 
 public class Sender implements Runnable{
-    HashMap<String, Socket> map = new HashMap<>();
-    DataOutputStream outToPeer;
-    BufferedReader inFromUser =
+    private HashMap<String, Socket> map = new HashMap<>();
+
+    private BufferedReader inFromUser =
             new BufferedReader(new InputStreamReader(System.in));
-    Socket TargetSocket; // Socket to communicate with peer
-    String[] split; // tmp space to assign result from split()
-    String Target_ip; // is destination where you want to send
-    String Msg_to_send; // is message to target_ip
+
 
     @Override
     public void run(){
+        DataOutputStream outToPeer;
+        Socket TargetSocket; // Socket to communicate with peer
+        String[] split; // tmp space to assign result from split()
+        String Target_ip; // is destination where you want to send
+        String Msg_to_send; // is message to target_ip
+
         while(true) {
             try {
-                split = inFromUser.readLine().split(":",2); // split UserInput by ":"
+                split = inFromUser.readLine().split(":",2); // split UserInput by ":" , you must type "ip:message" form ex) 127.0.0.1:hi , 196.8.4.2:hello
                 Target_ip = split[0];
                 Msg_to_send = split[1];
 
@@ -31,9 +34,10 @@ public class Sender implements Runnable{
                     map.put(Target_ip,TargetSocket); // put (ip,socket) into hash map for future use
                     outToPeer = new DataOutputStream(TargetSocket.getOutputStream());
                 }
-                outToPeer.writeBytes(Msg_to_send + '\n');
+                outToPeer.writeBytes(Msg_to_send + '\n'); // send message to peer
             } catch (IOException e) {
                 System.out.println("IoException in Sender Thread");
+                break;
             }
         }
     }
