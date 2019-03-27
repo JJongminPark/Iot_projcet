@@ -11,7 +11,6 @@ public class Sender implements Runnable{
     private BufferedReader inFromUser =
             new BufferedReader(new InputStreamReader(System.in));
 
-
     @Override
     public void run(){
         DataOutputStream outToPeer;
@@ -28,12 +27,11 @@ public class Sender implements Runnable{
 
                 if (map.containsKey(Target_ip)) { //If Target_Ip is already in hash map then use an existing socket
                     TargetSocket = map.get(Target_ip);
-                    outToPeer = new DataOutputStream(TargetSocket.getOutputStream());
                 } else {//if Target_ip is new one, then create socket to communicate with new peer
                     TargetSocket = new Socket(Target_ip,8181);
                     map.put(Target_ip,TargetSocket); // put (ip,socket) into hash map for future use
-                    outToPeer = new DataOutputStream(TargetSocket.getOutputStream());
                 }
+                outToPeer = new DataOutputStream(TargetSocket.getOutputStream());
                 outToPeer.writeBytes(Msg_to_send + '\n'); // send message to peer
             } catch (IOException e) {
                 System.out.println("IoException in Sender Thread");
